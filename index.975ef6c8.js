@@ -597,20 +597,24 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 
 },{}],"8lqZg":[function(require,module,exports,__globalThis) {
 var _getImgApi = require("./js/get-img-api");
+var _makeMarkup = require("./js/make-markup");
+var _pagination = require("./js/pagination");
 
-},{"./js/get-img-api":"5vEzD"}],"5vEzD":[function(require,module,exports,__globalThis) {
-// import {makeMakrup} from './make-makrup'
+},{"./js/get-img-api":"5vEzD","./js/make-markup":"llxYe","./js/pagination":"9j1Dd"}],"5vEzD":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getImgages", ()=>getImgages);
+var _makeMarkup = require("./make-markup");
+var _pagination = require("./pagination");
 const key = '48306443-446e4eebc6203163013c3f315';
-const getImgages = (keyword, pageSize, page)=>{
-    const API = `https://pixabay.com/api/?key=${key}`;
-    return fetch(API).then((data)=>data.json()).then((data)=>console.log(data));
+const color = 'pink';
+const getImgages = (pageNumber, page)=>{
+    const API = `https://pixabay.com/api/?&key=${key}&orientation='horizontal'&colors=${color}&page=${page}&per_page=${pageNumber}`;
+    return fetch(API).then((data)=>data.json()).then((data)=>(0, _makeMarkup.makeMarkup)(data));
 };
-getImgages();
+getImgages((0, _pagination.perPage), (0, _pagination.pageVar));
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./make-markup":"llxYe","./pagination":"9j1Dd"}],"gkKU3":[function(require,module,exports,__globalThis) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -640,6 +644,33 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["9mu7C","8lqZg"], "8lqZg", "parcelRequire94c2")
+},{}],"llxYe":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "makeMarkup", ()=>makeMarkup);
+const listEl = document.querySelector('.list');
+const makeMarkup = (data)=>{
+    const titlesMakrup = data.hits.map((obj)=>`<li class="img-item">
+                <img src="${obj.largeImageURL}" alt="">
+        </li>`).join('');
+    listEl.insertAdjacentHTML("beforeend", titlesMakrup);
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9j1Dd":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "perPage", ()=>perPage);
+parcelHelpers.export(exports, "pageVar", ()=>pageVar);
+var _getImgApi = require("./get-img-api");
+let perPage = 9;
+let pageVar = 1;
+const loadMoreBtn = document.querySelector('.show-more');
+loadMoreBtn.addEventListener('click', ()=>{
+    pageVar += 1;
+    console.log(perPage);
+    (0, _getImgApi.getImgages)(perPage, pageVar);
+});
+
+},{"./get-img-api":"5vEzD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["9mu7C","8lqZg"], "8lqZg", "parcelRequire94c2")
 
 //# sourceMappingURL=index.975ef6c8.js.map
