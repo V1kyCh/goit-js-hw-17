@@ -2,10 +2,9 @@
   "name": "news-gallery",
   "version": "75.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "dev": "npx parcel src/index.html",
-    "build": "parcel build src/index.html",
+    "build": "parcel build src/index.html --public-url ./",
     "deploy": "gh-pages -d dist",
     "predeploy": "npm run build"
   },
